@@ -1,0 +1,14 @@
+{%extends "atendimentos/base.html"%}
+
+{% block content%}
+
+<p><a href="{%url 'atendimento' atendimento.id%}">{{atendimento}}</a></p
+    
+<p>Editar Atendimento:</p>
+<form action="{%url 'edit_atendimento' atendimento.id%}" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button name="submit">Salvar</button>
+    <a href="{%url 'atendimento' atendimento.id%}">Cancelar</a>
+</form>
+{%endblock content%}

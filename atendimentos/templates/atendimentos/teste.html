@@ -1,0 +1,51 @@
+{%extends "atendimentos/base.html"%}
+
+{%block header%}
+<h1>Atendimentos</h1>
+    {%endblock header%}
+{% block content%}
+
+
+    <table class="table">
+        <tr>
+            <th>Código de Atendimento</th>
+            <th>Nome do Paciente</th>
+            <th>Usuário</th>
+            <th>Exames</th>
+            <th>Data</th>
+          </tr>    
+    {% for atendimento in atendimentos %}
+        <tr>
+        <td>
+            <h4>
+                 <a href="{% url 'atendimento' atendimento.id%}">{{atendimento.codigo}}</a>
+            </h4>
+        </td>
+        <td>
+            <h4>
+                 <a href="{% url 'atendimento' atendimento.id%}">{{atendimento.nomePaciente}}</a>
+            </h4>
+        <td>
+            <h4>
+                    <a href="{% url 'atendimento' atendimento.id%}">{{atendimento.usuario}}</a>
+            </h4>
+        </td>
+        <td>
+            <h4>
+                 <a href="{% url 'atendimento' atendimento.id%}">{{atendimento.exames}}</a>
+            </h4>
+        </td>
+        <td>
+            <h4>
+                 <a href="{% url 'atendimento' atendimento.id%}">{{atendimento.dataAtendimento}}</a>
+            </h4>
+        </td>
+        </td>
+        </tr>
+         {%empty%}
+        <li>Não há atendimentos</li>
+    {% endfor %}
+    </table>
+
+<a href="{% url 'new_atendimento'%}">Novo Atendimento</a>
+{%endblock content%}

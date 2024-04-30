@@ -1,0 +1,19 @@
+{%extends "atendimentos/base.html"%}
+
+{% block content%}
+<h3>Atendimento: Código: {{atendimento.codigo}} Nome do Paciente: {{atendimento.nomePaciente}} Data: {{atendimento.dataAtendimento | date:'d M, Y'}}  </h3>
+
+<ul><h1>Exames:</h1>
+{% for exame in exames %}
+    <li>
+        <p>{{exame}}</p>
+    </li>
+{%endfor%}
+<p>
+    <a href="{%url 'edit_atendimento' atendimento.id%}">Editar Atendimento</a>
+</p>
+<p>
+    <a onclick="return confirm('Tem certeza que deseja excluir?')" href="{%url 'delete_atendimento' atendimento.id%}">Apagar Atendimento</a>
+</p>
+
+{%endblock content%}

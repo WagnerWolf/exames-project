@@ -1,0 +1,16 @@
+{%extends "atendimentos/base.html"%}
+
+{%block header%}
+    <div class="jumbotron">
+        <h1>Página Principal</h1>
+    </div>
+{%endblock header%}
+
+{% block content%}
+    {%if user.is_authenticated%}
+    <h3>Utilize o menu para navegar no sistema.</a></h3>
+    {%else%}
+    <h3>Utilize o menu para navegar no sistema. Caso não possua uma conta, <a href="{%url 'register'%}">registre-se.</a></h3>
+    {%endif%}
+    
+{%endblock content%}
