@@ -27,6 +27,7 @@ class Atendimento (models.Model):
         ex = ex.replace("]","")
         ex = ex.replace("'","")
         ex = ex.replace(" ","")
+        ex = ex.replace(",",", ")
         #return f"{self.codigo} {self.nomePaciente} {self.usuario} {list(self.exames.all())} {self.dataAtendimento}"
         #return f"Código: {self.codigo} Nome do Paciente: {self.nomePaciente} Usuário: {self.usuario} Exames: {list(self.exames.all())}"
         return ex

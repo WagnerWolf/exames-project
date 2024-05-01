@@ -7,9 +7,9 @@
 {%endblock header%}
 
 {%block content%}
-    <!-- {% if error%}
-        <p>Seu Login e/ou senha estão incorretos.</p>
-    {%endif%} -->
+    {% if error%}
+    <div class="alert alert-warning" role="alert"><p >Seu Login e/ou senha estão incorretos.</p> </div>
+    {%endif%}
     <div class="container col-md-3">
     <form action ="{%url 'login'%}" method="post" class="form">
         {%csrf_token%}

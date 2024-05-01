@@ -1,14 +1,24 @@
 {%extends "atendimentos/base.html"%}
+{%load bootstrap3%}
 
 {% block content%}
 
-<p><a href="{%url 'atendimento' atendimento.id%}">{{atendimento}}</a></p
+<!-- <p><a href="{%url 'atendimento' atendimento.id%}">{{atendimento}}</a></p -->
+<h2>Editar Atendimento {{atendimento.nomePaciente}} {{atendimento.codigo}}</h2>
     
 <p>Editar Atendimento:</p>
 <form action="{%url 'edit_atendimento' atendimento.id%}" method="post">
     {% csrf_token %}
-    {{form.as_p}}
-    <button name="submit">Salvar</button>
-    <a href="{%url 'atendimento' atendimento.id%}">Cancelar</a>
+    {%bootstrap_form form%}
+    {%buttons%}
+    <button name="submit" class="btn btn-primary" aria-label="Left Align">Salvar</button>
+    <a class="btn btn-danger" aria-label="Left Align" href="{%url 'atendimento' atendimento.id%}">Cancelar</a>
+    {%endbuttons%} 
+
 </form>
+<style>
+    .form-control{
+        max-width: 25%;
+    }
+</style>
 {%endblock content%}

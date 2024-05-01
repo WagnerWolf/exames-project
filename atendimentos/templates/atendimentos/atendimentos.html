@@ -3,42 +3,49 @@
 {%block header%}
 <h1>Atendimentos</h1>
     {%endblock header%}
+    
 {% block content%}
-
-
-    <table class="table">
+    <table class="table table-bordered ">
+        <a class="btn btn-primary pull-right" style="margin:10px" aria-label="Left Align" href="{% url 'new_atendimento'%}">Novo Atendimento</a>
         <tr>
-            <th>Código de Atendimento</th>
-            <th>Nome do Paciente</th>
-            <th>Usuário</th>
-            <th>Exames</th>
-            <th>Data</th>
+            <th class="tableheader" scope="col">Código de Atendimento</th>
+            <th class="tableheader" scope="col">Nome do Paciente</th>
+            <th class="tableheader" scope="col">Usuário</th>
+            <th class="tableheader" scope="col">Exames</th>
+            <th class="tableheader" scope="col">Data</th>
+            <th class="tableheader" scope="col">Ações</th>
           </tr>    
     {% for atendimento in atendimentos %}
         <tr>
         <td>
             <h4>
-                 <a href="{% url 'atendimento' atendimento.id%}">{{atendimento.codigo}}</a>
+                 <small><a title="Clique para visualizar o Atendimento" href="{% url 'atendimento' atendimento.id%}">{{atendimento.codigo}}</a></small>
             </h4>
         </td>
         <td>
             <h4>
-                 <a href="{% url 'atendimento' atendimento.id%}">{{atendimento.nomePaciente}}</a>
+                 <small><a title="Clique para visualizar o Atendimento" href="{% url 'atendimento' atendimento.id%}">{{atendimento.nomePaciente}}</a></small>
             </h4>
         <td>
             <h4>
                     <!-- <a href="{% url 'atendimento' atendimento.id%}">{{atendimento.usuario}}</a> -->
-                    <a href="{% url 'atendimento' atendimento.id%}">{{atendimento.usuario}}</a>
+                 <small>   <a class="text-uppercase" title="Clique para visualizar o Atendimento" href="{% url 'atendimento' atendimento.id%}">{{atendimento.usuario}}</a></small>
             </h4>
         </td>
         <td>
             <h4>
-                 <a href="{% url 'atendimento' atendimento.id%}">{{atendimento}}</a>
+                 <small><a class="" title="Clique para visualizar o Atendimento" href="{% url 'atendimento' atendimento.id%}">{{atendimento}}</a></small>
             </h4>
         </td>
         <td>
             <h4>
-                 <a href="{% url 'atendimento' atendimento.id%}">{{atendimento.dataAtendimento}}</a>
+                 <small><a title="Clique para visualizar o Atendimento" href="{% url 'atendimento' atendimento.id%}">{{atendimento.dataAtendimento}}</a></small>
+            </h4>
+        </td>
+        <td>
+            <h4>
+                 <a title="Apagar Atendimento" class="glyphicon glyphicon-trash" onclick="return confirm('Tem certeza que deseja excluir?')" href="{% url 'delete_atendimento' atendimento.id%}"></a>
+                 <a title="Editar Atendimento" class="glyphicon glyphicon-pencil" href="{% url 'edit_atendimento' atendimento.id%}"></a>
             </h4>
         </td>
         </td>
@@ -50,5 +57,4 @@
     {% endfor %}
     </table>
 
-<a href="{% url 'new_atendimento'%}">Novo Atendimento</a>
 {%endblock content%}
