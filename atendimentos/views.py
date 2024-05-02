@@ -4,7 +4,6 @@ from django.urls import reverse
 from atendimentos.forms import AtendimentoForm
 from .models import Atendimento, Exame
 from django.contrib.auth.decorators import login_required
-
 # Create your views here.
 
 def index(request):
@@ -12,9 +11,19 @@ def index(request):
 
 @login_required
 def atendimentos(request):
-    atendimentos = Atendimento.objects.order_by('dataAtendimento')
-    context = {'atendimentos': atendimentos}
-    return render(request, 'atendimentos/atendimentos.html', context)
+    if request.method != 'POST':
+        atendimentos = Atendimento.objects.order_by('dataAtendimento')
+        context = {'atendimentos': atendimentos}
+        return render(request, 'atendimentos/atendimentos.html', context)
+    else:
+        filtrado = True
+        ano = request.POST.get('ano')
+        mes = request.POST.get('mes')
+        mesnome = {'01':'Janeiro','02':'Fevereiro','03':'Março','04':'Abril','05':'Maio','06': 'Junho','07':'Julho','08':'Agosto', '09':'Setembro', '10':'Outubro','11':'Novembro','12':'Dezembro'}
+        atendimentos = Atendimento.objects.order_by('dataAtendimento').filter(dataAtendimento__year=ano, 
+                      dataAtendimento__month=mes)
+        context = {'atendimentos': atendimentos, 'filtrado':filtrado,'ano':ano,'mes':mes,'mesnome':mesnome.get(mes)}
+        return render(request, 'atendimentos/atendimentos.html', context)
 
 @login_required
 def atendimento(request, atendimento_id):
@@ -62,3 +71,5 @@ def delete_atendimento(request, atendimento_id):
         atendimento = Atendimento.objects.get(id = atendimento_id)
         atendimento.delete()
         return HttpResponseRedirect(reverse('atendimentos'))
+    
+    

@@ -1,11 +1,48 @@
 {%extends "atendimentos/base.html"%}
+{%load bootstrap3%}
 
 {%block header%}
+{%if not filtrado%}
 <h1>Atendimentos</h1>
+
+{%else%}
+<h1>Atendimentos do Mês {{mesnome}} do ano de {{ano}}</h1>
+{%endif%}
     {%endblock header%}
     
 {% block content%}
-    <table class="table table-bordered ">
+
+<div>
+    <h4>Filtrar Atendimentos</h2>
+    <form action="/atendimentos" method="post" class="form">
+        {%csrf_token%}
+        <select class="btn btn-default form-select pull" name="mes" required>
+            <option value="" selected>Selecione o Mês</option>
+            <option value="01">Janeiro</option>
+            <option value="02">Fevereiro</option>
+            <option value="03">Março</option>
+            <option value="04">Abril</option>
+            <option value="05">Maio</option>
+            <option value="06">Junho</option>
+            <option value="07">Julho</option>
+            <option value="08">Agosto</option>
+            <option value="09">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+          </select>
+            <input type="text" class="form-control" name= "ano" placeholder="Ano" required aria-describedby="basic-addon1">
+            {%buttons%}  
+            <button name="submit" class="btn btn-default" aria-label="Left Align">Filtrar</button>
+            <a href="{%url 'atendimentos'%}"class="btn btn-danger" aria-label="Left Align">Limpar</a>
+        {%endbuttons%}
+    </form>
+</div>
+
+
+
+<table class="table table-bordered ">
+    
         <a class="btn btn-primary pull-right" style="margin:10px" aria-label="Left Align" href="{% url 'new_atendimento'%}">Novo Atendimento</a>
         <tr>
             <th class="tableheader" scope="col">Código de Atendimento</th>
@@ -56,5 +93,11 @@
         </td>
     {% endfor %}
     </table>
+
+    <style>
+        .form-control{
+            max-width: 13.2%;
+        }
+    </style>
 
 {%endblock content%}
