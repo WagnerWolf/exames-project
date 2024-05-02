@@ -24,6 +24,7 @@ urlpatterns = [
     path('atendimentos/<atendimento_id>/edit', views.edit_atendimento, name ='edit_atendimento'),
     path('atendimentos/<atendimento_id>/delete', views.delete_atendimento, name ='delete_atendimento'),
     path('new_atendimento', views.new_atendimento, name ='new_atendimento'),
+    path('atendimentos/report', views.report, name ='report'),
     #path('edit_atendimento/<atendimento_id>', views.edit_atendimento, name ='edit_atendimento'),
     #path('delete_atendimento/<atendimento_id>', views.delete_atendimento, name ='delete_atendimento'),
 ]
