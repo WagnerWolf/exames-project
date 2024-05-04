@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 class Exame(models.Model):
     mnemonico = models.CharField(max_length=10)
     nomeExame = models.CharField(max_length=100)
+    mneapoio = models.CharField(max_length=10)
+    valor = models.FloatField(max_length=10)
 
     def __str__(self):
         return f"{self.mnemonico} {self.nomeExame}"

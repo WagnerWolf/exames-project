@@ -12,11 +12,14 @@
 {% block content%}
 
 <table class="table table-bordered ">
-    <tr><th class="tableheader" scope="col">Exames</th></tr>
+    <th class="tableheader" scope="col">Exames</th>
+    <th class="tableheader" scope="col">Preço Apoio</th>
 {% for exame in exames %}
     <tr>
         <td>
             <p>{{exame}}</p>
+        </td><td>
+            <p>{{exame.valor}}</p>
         </td>
     </tr>
     
