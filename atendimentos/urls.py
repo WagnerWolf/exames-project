@@ -23,6 +23,7 @@ urlpatterns = [
     path('atendimentos/<atendimento_id>/', views.atendimento, name ='atendimento'),
     path('atendimentos/<atendimento_id>/edit', views.edit_atendimento, name ='edit_atendimento'),
     path('atendimentos/<atendimento_id>/delete', views.delete_atendimento, name ='delete_atendimento'),
+    path('atendimentos/<atendimento_id>/carta', views.carta_atendimento, name ='carta_atendimento'),
     path('new_atendimento', views.new_atendimento, name ='new_atendimento'),
     path('atendimentos/report', views.report, name ='report'),
 ]

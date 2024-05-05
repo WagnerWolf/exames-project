@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, Http404, FileResponse
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from atendimentos.forms import AtendimentoForm
-from .models import Atendimento, Exame
+from .models import Atendimento
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from datetime import date
@@ -86,6 +86,7 @@ def delete_atendimento(request, atendimento_id):
     
 @login_required
 def report(request):
+    
     if request.method != 'POST':
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'inline; filename = Relatório '+ str(date.today()) +' .pdf'
@@ -130,3 +131,22 @@ def report(request):
 
         return response
 
+@login_required
+def carta_atendimento(request, atendimento_id):
+    atendimento = Atendimento.objects.get(id = atendimento_id)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename = Relatório '+ str(date.today()) +' .pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
+    html_string = render_to_string('atendimentos/pdf-output-carta.html',{'atendimento':atendimento})
+    html = HTML(string=html_string)
+    
+
+    result = html.write_pdf()
+
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output=open(output.name, 'rb')
+        response.write(output.read())
+
+    return response

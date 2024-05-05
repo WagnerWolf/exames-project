@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta Biópsia</title>
+    <style>
+        @page{
+            size: "A4";
+            margin: 0.3cm 0.3cm 0.3cm 0.3cm;
+        }
+        table, th, td {
+        border: 1px solid black;
+}   
+
+body {
+  background-image: url('https://gistcdn.githack.com/WagnerWolf/fa41cf1bf9e7dc870e540c9d4cee8640/raw/cbce1db0d7fd3c58f2d400634e6a57c6f74dafce/carta.svg');
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+p {
+  font-size: 13px;
+}p2 {
+  font-size: 13px;
+  font-weight: bold;
+}
+#bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 140px;
+        }
+
+
+    </style>
+</head>
+<body>
+<br>
+<br>
+<br>
+<br>
+    <h4 style="text-align: right; padding: 0; margin: 0;">N° {000} {ano} </h5>
+    <h4 style="text-align: right; padding: 0; margin: 0;">Santarém, Pará {data de hoje} </h5>
+<h3 style="text-align: left; padding: 0; margin: 0;">À</h5>
+<h3 style="text-align: left; padding: 0; margin: 0;">{Laboratório Escolhido}</h5>
+<h3 style="text-align: left; padding: 0; margin: 0;">A/C: {escolher}</h5>
+<br>
+<p style="text-align: left; padding: 0; margin: 0;">Estamos encaminhando o material para exame do seguinte paciente:</p>
+<br>
+<p style="text-align: left; padding: 0; margin: 0;">Nome do Paciente: {Nome completo do Paciente}</p>
+<p style="text-align: left; padding: 0; margin: 0;">RG: {RG do paciente}     CPF: {000.000.000-00}</p>
+<p style="text-align: left; padding: 0; margin: 0;">Sexo: {Masculino ou Feminino}    Data de Nascimento: {00/00/0000}</p>
+<p style="text-align: left; padding: 0; margin: 0;">Nome da Mãe: {Nome completo da mãe do paciente}</p>
+<p style="text-align: left; padding: 0; margin: 0;">Código EV: {000000000000}     Data de Coleta: {00/00/0000}</p>
+<p style="text-align: left; padding: 0; margin: 0;">Médico Solicitante: {Nome Completo do Médico}  CRM: {00000}/{UF}</p>
+<div id="selecionar categoria">
+<p style="text-align: left; padding: 0; margin: 0;">Categoria: </p>
+<p style="text-align: left; padding: 0; margin: 0;">{Particular ou Convênio}: {Nome do Convênio caso tenha}</p>
+</div>
+<div id="exames solicitados">
+<p style="text-align: left; padding: 0; margin: 0;">Exames Solicitados:</p>
+<p style="text-align: left; padding: 0; margin: 0;">{Seleção: histopatológico, citopatológico e/ou imunohistoquímica}</p>
+</div>
+<br>
+<p style="text-align: left; padding: 0; margin: 0;">Material: {descrição do material}</p>
+<br>
+    <table class="table">
+        <thead class="thead">
+            <tr>
+                <th>Item</th>
+                <th>Material</th>
+                <th>Qtd</th>
+                <th>Custo Individual</th>
+                <th>Sub-Total</th>
+            </tr>
+            
+        <tbody>
+            {% for atendimento in atendimentos%}
+            <tr>
+                <td>{{atendimento.codigo}}</td>
+                <td>{{atendimento.nomePaciente}}</td>
+                <td>{{atendimento}}</td>
+                <td>{{atendimento.dataAtendimento}}</td>
+            </tr>
+            {%endfor%}
+            <tr>
+                <td>Total</td>
+                <td>{Valor Total}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="bottom">
+        <p2>Emitido por: {nome de usuario} - {CPF do usuario}</p2>
+        </div>
+
+</body>
+</html>

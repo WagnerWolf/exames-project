@@ -1,5 +1,5 @@
 from django import forms
-from .models import Atendimento, Exame
+from .models import Atendimento, Exame, ExameQtd
 from django.contrib.auth.models import User
 class AtendimentoForm(forms.ModelForm):
     class Meta:
@@ -17,4 +17,7 @@ class AtendimentoForm(forms.ModelForm):
             'class': 'form-check-input',
         })
     
-    )
+     )
+
+    
+    

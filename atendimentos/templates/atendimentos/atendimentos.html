@@ -40,14 +40,14 @@
 <div>
   <h4>Imprimir Listagem</h2>
     {%if not filtrado%}
-    <a href="{%url 'report'%}"target="_blank" class="glyphicon glyphicon-print" aria-label="Left Align"></a>
+    <a href="{%url 'report'%}"target="_blank" class="btn btn-default glyphicon glyphicon-print" aria-label="Left Align"></a>
     {%else%}
   <form action="/atendimentos/report" target="_blank" method="post" class="form">
       {%csrf_token%}
           {%buttons%}  
           <input type="hidden" class="form-control" name= "mes" value="{{mes}}">
           <input type="hidden" class="form-control" name= "ano" value="{{ano}}">
-          <button name="submit" class="glyphicon glyphicon-print" aria-label="Left Align"></button>
+          <button name="submit" class="btn btn-default  glyphicon glyphicon-print" aria-label="Left Align"></button>
       {%endbuttons%}
   </form>
   {%endif%}
