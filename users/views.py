@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as authLogin
 from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm
+from atendimentos.forms import UserInfoForm
 
 
 def login(request):
@@ -42,14 +43,21 @@ def register(request):
         """cadastro de um novo usuário"""
         if request.method != 'POST':
             form = UserCreationForm()
+            form2 = UserInfoForm()
         else:
             form = UserCreationForm(data=request.POST)
+            form2 = UserInfoForm(data=request.POST)
             #processa o formulario preenchido
-            if form.is_valid():
+            if form2.is_valid() and form.is_valid:
                 new_user = form.save()
-                #faz o login e redireciona para a pagina inicial
+                # faz o login e redireciona para a pagina inicial
+                new_userinfo = form2.save(commit=False)
+                new_userinfo.user = new_user
+                new_userinfo.nome = request.POST.get('nome')
+                new_userinfo.cpf = request.POST.get('cpf')
+                new_userinfo = form2.save()
                 authenticated_user = authenticate(username=new_user.username, password=request.POST['password1'])
                 authLogin(request,authenticated_user)
                 return HttpResponseRedirect(reverse('index'))
-        context = {'form': form}
+        context = {'form': form,'form2':form2}
         return render(request, 'users/register.html', context)

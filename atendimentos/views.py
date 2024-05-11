@@ -54,9 +54,11 @@ def new_atendimento(request):
             atendimento = form.save(commit = False)
             atendimento.usuario = request.user
             atendimento = form.save()
+            context = {'atendimento':atendimento}
             return HttpResponseRedirect(reverse('atendimentos'))
     context = {'form':form}
     return render(request, 'atendimentos/new_atendimento.html',context)
+
 
 
 @login_required
@@ -134,19 +136,23 @@ def report(request):
 @login_required
 def carta_atendimento(request, atendimento_id):
     atendimento = Atendimento.objects.get(id = atendimento_id)
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename = Relatório '+ str(date.today()) +' .pdf'
-    response['Content-Transfer-Encoding'] = 'binary'
-    html_string = render_to_string('atendimentos/pdf-output-carta.html',{'atendimento':atendimento})
-    html = HTML(string=html_string)
-    
+    if request.method != 'POST':
+        context = {'atendimento':atendimento}
+        return render (request, 'atendimentos/carta_atendimento.html', context)
+    else:
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'inline; filename = Relatório '+ str(date.today()) +' .pdf'
+        response['Content-Transfer-Encoding'] = 'binary'
+        html_string = render_to_string('atendimentos/pdf-output-carta.html',{'atendimento':atendimento})
+        html = HTML(string=html_string)
+        
 
-    result = html.write_pdf()
+        result = html.write_pdf()
 
-    with tempfile.NamedTemporaryFile(delete=True) as output:
-        output.write(result)
-        output.flush()
-        output=open(output.name, 'rb')
-        response.write(output.read())
+        with tempfile.NamedTemporaryFile(delete=True) as output:
+            output.write(result)
+            output.flush()
+            output=open(output.name, 'rb')
+            response.write(output.read())
 
-    return response
+        return response

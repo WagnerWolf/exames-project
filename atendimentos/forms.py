@@ -1,6 +1,8 @@
 from django import forms
-from .models import Atendimento, Exame, ExameQtd
+from .models import Atendimento, Exame, UserInfo
 from django.contrib.auth.models import User
+from validate_docbr import CPF
+
 class AtendimentoForm(forms.ModelForm):
     class Meta:
         user = User
@@ -18,6 +20,22 @@ class AtendimentoForm(forms.ModelForm):
         })
     
      )
-
     
+
+
+class UserInfoForm(forms.ModelForm):
+    class Meta:
+        user = User
+        model = UserInfo
+        fields = ['nome','cpf']
+        labels = {'nome': 'Nome Completo do Usuário', 'cpf': 'CPF'}
+
+    def clean_cpf(self):
+        cpfv = CPF()
+        cpf = self.cleaned_data['cpf']
+
+        
+        if cpfv.validate(cpf) is False:
+            raise forms.ValidationError("CPF Inválido")
+        return cpf
     

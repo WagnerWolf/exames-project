@@ -21,3 +21,4 @@ class LoginForm(forms.Form):
         nome = cleaned_data.get('usuario')
         if not(nome.isalnum()):
             raise ValidationError('O nome de usuário não pode conter caracteres especiais')
+        
