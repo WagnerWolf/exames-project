@@ -4,7 +4,7 @@
     <a class="btn btn-danger pull-right" style="margin:10px" aria-label="Left Align" onclick="return confirm('Tem certeza que deseja excluir?')" href="{%url 'delete_atendimento' atendimento.id%}">Apagar Atendimento</a>
     {{form.as_p}}
     <a class="btn btn-primary pull-right" style="margin:10px" aria-label="Left Align" href="{%url 'edit_atendimento' atendimento.id%}">Editar Atendimento</a>
-    <a class="btn btn-primary pull-right" style="margin:10px" aria-label="Left Align" href="{%url 'carta' atendimento.id%}">Carta de Biópsia</a>
+    <a class="btn btn-primary pull-right" style="margin:10px" aria-label="Left Align" href="{%url 'carta_atendimento' atendimento.id%}">Carta de Biópsia</a>
     <td>Código: {{atendimento.codigo}}</td>
     <td>Nome do Paciente: {{atendimento.nomePaciente}}</td>
     <td>Data: {{atendimento.dataAtendimento | date:'d M, Y'}}  </td>

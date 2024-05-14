@@ -13,7 +13,6 @@
         table, th, td {
         border: 1px solid black;
 }   
-
 body {
   background-image: url('https://gistcdn.githack.com/WagnerWolf/fa41cf1bf9e7dc870e540c9d4cee8640/raw/cbce1db0d7fd3c58f2d400634e6a57c6f74dafce/carta.svg');
   height: 100%;
@@ -22,10 +21,12 @@ body {
   background-size: cover;
 }
 p {
-  font-size: 13px;
+    font-size: 16px;
 }p2 {
   font-size: 13px;
-  font-weight: bold;
+  font-weight: bolder;
+}p3 {
+  font-size: 13px;
 }
 #bottom {
             position: absolute;
@@ -42,30 +43,38 @@ p {
 <br>
 <br>
 <br>
-    <h4 style="text-align: right; padding: 0; margin: 0;">N° {000} {ano} </h5>
-    <h4 style="text-align: right; padding: 0; margin: 0;">Santarém, Pará {data de hoje} </h5>
+<br>
+    <h4 style="text-align: right; padding: 0; margin: 0;">N° {{numero_carta}}/{% now "Y" %}</h5>
+    <h4 style="text-align: right; padding: 0; margin: 0;">Santarém, Pará {% now "d/m/Y" %} </h5>
 <h3 style="text-align: left; padding: 0; margin: 0;">À</h5>
-<h3 style="text-align: left; padding: 0; margin: 0;">{Laboratório Escolhido}</h5>
-<h3 style="text-align: left; padding: 0; margin: 0;">A/C: {escolher}</h5>
+<h3 style="text-align: left; padding: 0; margin: 0;">{{apoio}}</h5>
+<h3 style="text-align: left; padding: 0; margin: 0;">A/C: {{ac}}</h5>
 <br>
-<p style="text-align: left; padding: 0; margin: 0;">Estamos encaminhando o material para exame do seguinte paciente:</p>
+<p style="text-align: left; padding: 0; margin: 0;"><strong>Estamos encaminhando o material para exame do seguinte paciente:</strong></p>
 <br>
-<p style="text-align: left; padding: 0; margin: 0;">Nome do Paciente: {Nome completo do Paciente}</p>
-<p style="text-align: left; padding: 0; margin: 0;">RG: {RG do paciente}     CPF: {000.000.000-00}</p>
-<p style="text-align: left; padding: 0; margin: 0;">Sexo: {Masculino ou Feminino}    Data de Nascimento: {00/00/0000}</p>
-<p style="text-align: left; padding: 0; margin: 0;">Nome da Mãe: {Nome completo da mãe do paciente}</p>
-<p style="text-align: left; padding: 0; margin: 0;">Código EV: {000000000000}     Data de Coleta: {00/00/0000}</p>
-<p style="text-align: left; padding: 0; margin: 0;">Médico Solicitante: {Nome Completo do Médico}  CRM: {00000}/{UF}</p>
+<p style="text-align: left; padding: 0; margin: 0;"><strong>Nome do Paciente:</strong> {{nomePaciente}}</p>
+<p style="text-align: left; padding: 0; margin: 0;"><strong>RG:</strong> {{rgPaciente}}    <strong>CPF:</strong> {{cpf}}</p>
+<p style="text-align: left; padding: 0; margin: 0;"><strong>Sexo:</strong> {{sexo}}    <strong>Data de Nascimento:</strong> {{nascimento}}</p>
+<p style="text-align: left; padding: 0; margin: 0;"><strong>Nome da Mãe:</strong> {{maePaciente}}</p>
+<p style="text-align: left; padding: 0; margin: 0;"><strong>Código EV:</strong> {{codigo}}     <strong>Data de Coleta:</strong> {{data}}</p>
+<p style="text-align: left; padding: 0; margin: 0;"><strong>Médico Solicitante:</strong> {{medico}}  <strong>CRM:</strong> {{crm}}/{{uf}}</p>
 <div id="selecionar categoria">
-<p style="text-align: left; padding: 0; margin: 0;">Categoria: </p>
-<p style="text-align: left; padding: 0; margin: 0;">{Particular ou Convênio}: {Nome do Convênio caso tenha}</p>
+<p style="text-align: left; padding: 0; margin: 0;"><strong>Categoria:</strong> </p>
+{%if categoria != 'Particular'%}
+<p style="text-align: left; padding: 0; margin: 0;">{{categoria}}: {{convenio}}</p>
+{%else%}
+<p style="text-align: left; padding: 0; margin: 0;">{{categoria}}</p>
+{%endif%}
 </div>
 <div id="exames solicitados">
-<p style="text-align: left; padding: 0; margin: 0;">Exames Solicitados:</p>
-<p style="text-align: left; padding: 0; margin: 0;">{Seleção: histopatológico, citopatológico e/ou imunohistoquímica}</p>
+<p style="text-align: left; padding: 0; margin: 0;"><strong>Exames Solicitados:</strong></p>
+{%for exame in exames%}
+<input type="checkbox" checked> {{exame}}
+{%endfor%}
 </div>
 <br>
-<p style="text-align: left; padding: 0; margin: 0;">Material: {descrição do material}</p>
+<p style="text-align: left; padding: 0; margin: 0;"><strong>Material:</strong></p>
+<p style="text-align: left; padding: 0; margin: 0;">{{descmaterial}}</p>
 <br>
     <table class="table">
         <thead class="thead">
@@ -78,22 +87,37 @@ p {
             </tr>
             
         <tbody>
-            {% for atendimento in atendimentos%}
+            {%if not flag%}
+            {% for item in itens%}
             <tr>
-                <td>{{atendimento.codigo}}</td>
-                <td>{{atendimento.nomePaciente}}</td>
-                <td>{{atendimento}}</td>
-                <td>{{atendimento.dataAtendimento}}</td>
+                
+                <td>{{forloop.counter}}</td>
+                <td>{{item.item}}</td>
+                <td>{{item.quantidade}}</td>
+                <td>R$ {{ item.preco }}</td>
+                <td>R$ {{ item.total }}</td>
+                
             </tr>
             {%endfor%}
+            {%else%}
+            <tr>
+                <td>1</td>
+                <td>{{itens.item}}</td>
+                <td>{{itens.quantidade}}</td>
+                <td>R$ {{ itens.preco }}</td>
+                <td>R$ {{ itens.total }}</td>
+                
+            </tr>
+            {%endif%}
+
             <tr>
                 <td>Total</td>
-                <td>{Valor Total}</td>
+                <td>{{total}}</td>
             </tr>
         </tbody>
     </table>
     <div id="bottom">
-        <p2>Emitido por: {nome de usuario} - {CPF do usuario}</p2>
+        <p3><strong>Emitido por:</strong> {{nomeUsuario}} - CPF: {{cpfUsuario}}</p3>
         </div>
 
 </body>
