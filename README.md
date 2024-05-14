@@ -6,4 +6,4 @@ Estou muito satisfeito com o conhecimento adquirido ao longo do projeto e hoje e
 
 
 Lista de pacotes necessários para instalar via pip:
-Django, django-bootstrap3, weasyprint
+Django, django-bootstrap3, weasyprint, validate-docbr
