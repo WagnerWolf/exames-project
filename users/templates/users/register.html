@@ -1,47 +1,152 @@
 {% extends "atendimentos/base.html" %}
+{% load bootstrap3 %}
 
-{%load bootstrap3%}
-
-{%block content%}
-
-    <form action ="{%url 'register'%}" method="post" class="ul-none">
-        {%csrf_token%}
-        {%bootstrap_form form %}
-        {%bootstrap_form form2 %}
-        {%buttons%}  
-        <button name="submit" class="btn btn-default" aria-label="Left Align">Registrar</button>
-        <a href="{%url 'index'%}"class="btn btn-danger" aria-label="Left Align">Cancelar</a>
-    {%endbuttons%}
-
+{% block content %}
+    <form id="registerForm" action="{% url 'register' %}" method="post" class="ul-none">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_cpf">CPF:</label>
+            <input type="text" id="id_cpf" name="cpf" class="form-control" required>
+            <small id="cpfError" class="form-text text-danger"></small>
+        </div>
+        <div class="form-group">
+            <label for="id_fullname">Nome Completo do Usuário:</label>
+            <input type="text" id="id_fullname" name="fullname" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_username">Usuário:</label>
+            <input type="text" id="id_username" name="username" class="form-control" required>
+            <small id="usernameError" class="form-text text-danger"></small>
+        </div>
+        <div class="form-group">
+            <label for="id_password">Senha:</label>
+            <input type="password" id="id_password" name="password" class="form-control" required>
+            <small id="passwordError" class="form-text text-danger"></small>
+        </div>
+        <div class="form-group">
+            <label for="id_password_confirm">Confirmar Senha:</label>
+            <input type="password" id="id_password_confirm" name="password_confirm" class="form-control" required>
+            <small id="passwordConfirmError" class="form-text text-danger"></small>
+        </div>
+        <button type="submit" class="btn btn-default" aria-label="Left Align">Registrar</button>
+        <a href="{% url 'index' %}" class="btn btn-danger" aria-label="Left Align">Cancelar</a>
     </form>
+
     <style>
-        .ul-none ul{
+        .ul-none ul {
             display: none;
         }
-        .tableheader{
-            position:sticky;
-            top: 0 ;
+        .tableheader {
+            position: sticky;
+            top: 0;
         }
-        .helptext{
-            display:none
+        .helptext {
+            display: none;
         }
-        .form-control{
+        .form-control {
             max-width: 20%;
         }
     </style>
 
-<script>
-   document.getElementById('id_cpf').addEventListener('input', function(e) {
-            var value = e.target.value;
-            var cpfPattern = value
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+        function isValidCPF(cpf) {
+            cpf = cpf.replace(/[^\d]+/g, '');
+            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+            let sum, rest;
+            sum = 0;
+            for (let i = 1; i <= 9; i++) sum += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+            rest = (sum * 10) % 11;
+            if (rest === 10 || rest === 11) rest = 0;
+            if (rest !== parseInt(cpf.substring(9, 10))) return false;
+
+            sum = 0;
+            for (let i = 1; i <= 10; i++) sum += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+            rest = (sum * 10) % 11;
+            if (rest === 10 || rest === 11) rest = 0;
+            if (rest !== parseInt(cpf.substring(10, 11))) return false;
+
+            return true;
+        }
+
+        function formatCPF(cpf) {
+            return cpf
                 .replace(/\D/g, '') // Remove qualquer coisa que não seja número
                 .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona ponto após o terceiro dígito
                 .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona ponto após o sexto dígito
                 .replace(/(\d{3})(\d)/, '$1-$2') // Adiciona traço após o nono dígito
                 .replace(/(-\d{2})\d+?$/, '$1'); // Impede entrada de mais de 11 dígitos
-            e.target.value = cpfPattern;
+        }
+
+        var form = document.getElementById('registerForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            var isValid = true;
+
+            // Clear previous error messages
+            document.getElementById('cpfError').innerText = '';
+            document.getElementById('usernameError').innerText = '';
+            document.getElementById('passwordError').innerText = '';
+            document.getElementById('passwordConfirmError').innerText = '';
+
+            // CPF validation
+            var cpf = document.getElementById('id_cpf').value;
+            if (!isValidCPF(cpf)) {
+                document.getElementById('cpfError').innerText = 'Formato de CPF inválido ou CPF inválido.';
+                isValid = false;
+            }
+
+            // Username validation
+            var username = document.getElementById('id_username').value;
+            var usernamePattern = /^[a-zA-Z0-9]+$/;
+            if (!usernamePattern.test(username)) {
+                document.getElementById('usernameError').innerText = 'O nome de usuário deve conter apenas caracteres alfanuméricos.';
+                isValid = false;
+            }
+
+            // Password validation
+            var password = document.getElementById('id_password').value;
+            var passwordConfirm = document.getElementById('id_password_confirm').value;
+            var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+}{":;'?/>.<,]).{8,}$/;
+            if (!passwordPattern.test(password)) {
+                document.getElementById('passwordError').innerText = 'A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um caractere especial e ter no mínimo 8 caracteres.';
+                isValid = false;
+            }
+
+            // Password confirm validation
+            if (password !== passwordConfirm) {
+                document.getElementById('passwordConfirmError').innerText = 'As senhas não coincidem.';
+                isValid = false;
+            }
+
+            if (isValid) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', form.action, true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('X-CSRFToken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        // Handle successful response
+                        alert('Usuário registrado com sucesso!');
+                        window.location.href = "{% url 'index' %}";
+                    } else if (xhr.readyState === 4) {
+                        // Handle error response
+                        alert('Erro ao registrar usuário.');
+                    }
+                };
+
+                var formData = new FormData(form);
+                var encodedData = new URLSearchParams(formData).toString();
+                xhr.send(encodedData);
+            }
         });
 
-
-</script>
-{%endblock content%}
+        // CPF formatting
+        document.getElementById('id_cpf').addEventListener('input', function(e) {
+            e.target.value = formatCPF(e.target.value);
+        });
+    });
+    </script>
+{% endblock content %}
