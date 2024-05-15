@@ -14,6 +14,7 @@
     {%bootstrap_css%}
     {%bootstrap_javascript%}
 
+    
  </head>
  <body>
     <nav class="navbar navbar-default navbar-static-top">
@@ -30,10 +31,25 @@
                 </ul>   
 
                 <ul class="nav navbar-nav navbar-right">
+                    
                     {%if user.is_authenticated%}
+                    <li class="list-group-item toggle-container">
+                        <span class="toggle-label">Alternar Tema</span>
+                        <div class="TriSea-technologies-Switch pull-right">
+                            <input id="theme-toggle" name="TriSea1" type="checkbox"/>
+                            <label for="theme-toggle" class="label-default"></label>
+                        </div>
+                    </li>
                         <li><a>Olá, {{ user.username.upper }}</a></li>
                         <li><a href="{%url 'logout'%}">Sair</a></li>
                     {%else%}
+                    <li class="list-group-item toggle-container">
+                        <span class="toggle-label">Alternar Tema</span>
+                        <div class="TriSea-technologies-Switch pull-right">
+                            <input id="theme-toggle" name="TriSea1" type="checkbox"/>
+                            <label for="theme-toggle" class="label-default"></label>
+                        </div>
+                    </li>
                     <li><a href="{%url 'register'%}">Registrar</a></li>
                     <li><a href="{%url 'login'%}">Entrar</a></li>
                     {%endif%}
@@ -49,9 +65,224 @@
             {% block content%} {%endblock content%}
         </div>
     </div>
+     <!-- Mensagem com o nome do autor -->
+     <footer class="footer">
+            <p class="text-muted">Desenvolvido por <span class="author-name">Wagner Wolf</span></p>
+    </footer>
+
+    <style>
+        /* Estilos para a parte de baixo da página */
+        .footer {
+            position: fixed;
+            bottom: 10px; /* Distância do fundo da página */
+            right: 10px; /* Distância da borda direita */
+            background-color: #f8f9fa;
+            padding: 10px 20px;
+            border-top: 1px solid #dee2e6;
+            border-radius: 5px; /* Bordas arredondadas */
+        }
     
+        .author-name {
+            font-weight: bold; /* Texto em negrito */
+            font-style: italic; /* Texto em itálico */
+            display: inline-block; /* Exibe o contêiner inline com o texto */
+            margin-left: 5px; /* Adiciona uma pequena margem à esquerda do contêiner */
+        }
+    
+        /* Estilos padrão para tema claro */
+        body, button {
+            background-color: #f8f9fa !important;
+            color: #000 !important;
+        }
+    
+        .jumbotron {
+            background-color: #f3f4f6 !important;
+            color: #212529 !important;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 0.3rem;
+        }
+    
+        /* Estilos para a navbar */
+        .navbar {
+            background-color: #f8f9fa !important;
+        }
+    
+        .navbar-nav .nav-item .nav-link {
+            color: #000 !important;
+            transition: background-color 0.3s ease;
+        }
+    
+        /* Efeito de hover para os itens da navbar */
+        .navbar-nav .nav-item .nav-link:hover {
+            background-color: #fff !important;
+            color: #000 !important;
+        }
+    
+        /* Estilos para os itens de formulário */
+        .form-control {
+            background-color: #fff !important;
+            color: #000 !important;
+            border: 1px solid #ced4da !important;
+        }
+    
+        /* Estilos para tema escuro */
+        body.dark-theme, button.dark-theme {
+            background-color: #343a40 !important;
+            color: #fff !important;
+        }
+    
+        .jumbotron.dark-theme {
+            background-color: #3c4042 !important;
+            color: #e6e6e6 !important;
+        }
+    
+        .dark-theme .navbar {
+            background-color: #e6e6e6 !important;
+        }
+    
+        .dark-theme .navbar-nav .nav-item .nav-link {
+            color: #fff !important;
+        }
+    
+        /* Efeito de hover para os itens da navbar no tema escuro */
+        .dark-theme .navbar-nav .nav-item .nav-link:hover {
+            background-color: #fff !important;
+            color: #000 !important;
+        }
+    
+        /* Estilos para os itens de formulário no tema escuro */
+        .dark-theme .form-control {
+            background-color: #343a40 !important;
+            color: #fff !important;
+            border: 1px solid #495057 !important;
+        }
+        /* Estilos para o toggle switch */
+/* CSS adicional para os switches */
+.TriSea-technologies-Switch > input[type="checkbox"] {
+    display: none;   
+}
+
+.TriSea-technologies-Switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative; 
+    width: 40px;  
+}
+
+.TriSea-technologies-Switch > label::before {
+    background: rgb(255, 255, 255);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 16px;
+    margin-top: -8px;
+    position:absolute;
+    opacity: 0.3;
+    transition: all 0.4s ease-in-out;
+    width: 40px;
+}
+.TriSea-technologies-Switch > label::after {
+    background: rgb(0, 0, 0);
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    left: -4px;
+    margin-top: -8px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 24px;
+}
+.TriSea-technologies-Switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+}
+.TriSea-technologies-Switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
+}
+.list-group-item {
+    border: none; /* Remove a borda do item da lista */
+    padding: 10px; /* Adiciona um espaçamento interno */
+    display: flex; /* Usa flexbox para alinhar os itens */
+    align-items: center; /* Alinha verticalmente os itens */
+}
+
+.list-group-item .toggle-label {
+    margin-right: 10px; /* Espaçamento à direita para separar o texto do switch */
+}
+
+.list-group-item .toggle-switch {
+    margin-bottom: 0; /* Remove o espaço extra abaixo do switch */
+}
+
+/* Estilos para o toggle container */
+.toggle-container {
+    padding: 10px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    margin-bottom: 10px; /* Espaçamento inferior */
+    display: flex; /* Usar flexbox para centralizar verticalmente */
+    align-items: center; /* Centralizar verticalmente */
+}
+
+/* Estilos para o tema claro */
+.light-theme .toggle-container {
+    background-color: #f8f9fa ; /* Cor de fundo no tema claro */
+}
+
+/* Estilos para o tema escuro */
+.dark-theme .toggle-container {
+    background-color: #e6e6e6 !important; /* Cor de fundo no tema escuro */
+}
+
+/* Estilos para o texto do toggle */
+.light-theme .toggle-label {
+    color: #000; /* Cor de texto igual à da fonte da navbar */
+}
+.dark-theme .toggle-label {
+    color: #000; /* Cor de texto igual à da fonte da navbar */
+}
+
+</style>
+    
+    
+    
+    
+<script>
+    // Função para alternar entre temas claro e escuro
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        document.querySelectorAll('button').forEach(element => {
+            element.classList.toggle('dark-theme');
+        });
+        // Salvar o tema escolhido na sessão do usuário
+        if (document.body.classList.contains('dark-theme')) {
+            sessionStorage.setItem('theme', 'dark');
+        } else {
+            sessionStorage.setItem('theme', 'light');
+        }
+
+        // Alterar o estado do toggle switch
+        const toggleSwitch = document.querySelector('.toggle-switch');
+        toggleSwitch.classList.toggle('active');
+    }
+
+    // Adiciona um event listener para o botão de toggle
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+    // Verificar se o usuário já escolheu um tema antes e aplicá-lo
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = sessionStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            toggleTheme(); // Aplica o tema escuro
+        }
+    });
+</script>
  </body>
  </html>
  
 
   </div>
+  
