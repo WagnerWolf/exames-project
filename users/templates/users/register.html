@@ -5,16 +5,16 @@
     <form id="registerForm" action="{% url 'register' %}" method="post" class="ul-none">
         {% csrf_token %}
         <div class="form-group">
+            <label for="id_fullname">Nome Completo do Usuário:</label>
+            <input type="text" id="id_fullname" name="fullname" class="form-control" required>
+        </div>
+                <div class="form-group">
             <label for="id_cpf">CPF:</label>
             <input type="text" id="id_cpf" name="cpf" class="form-control" required>
             <small id="cpfError" class="form-text text-danger"></small>
         </div>
         <div class="form-group">
-            <label for="id_fullname">Nome Completo do Usuário:</label>
-            <input type="text" id="id_fullname" name="fullname" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="id_username">Usuário:</label>
+            <label for="id_username">Login:</label>
             <input type="text" id="id_username" name="username" class="form-control" required>
             <small id="usernameError" class="form-text text-danger"></small>
         </div>
