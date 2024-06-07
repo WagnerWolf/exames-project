@@ -178,6 +178,8 @@ def carta_atendimento(request, atendimento_id):
                 total+= item['preco']*item['quantidade']
                 item['preco'] = format(item['preco'],".2f").replace(".", ",")
             flag = False
+            total = format(total,".2f").replace(".", ",")
+
         else:
             itens2['preco'] = float(itens2['preco'])
             itens2['quantidade'] = int(itens2['quantidade'])
