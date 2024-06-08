@@ -6,15 +6,19 @@
 <form method="post" id="formulario" class="form" onsubmit="sendData(); return false;">
     <input type="hidden" id="Url" data-url="{%url 'carta_atendimento' atendimento.id%}" />
     {% csrf_token %}
-<div class="form-group"><label class="control-label" for="numero_carta">Número da carta</label><input type="text" name="numero_carta" maxlength="5" class="form-control" placeholder="N°" title="" required=""></div>
-<div class="form-group">
-    <label for="selectApoio">Laboratório de Apoio:</label>
-    <select class="form-control" id="selectApoio" name="apoio">
-        <option value="" disabled selected>Selecione uma opção</option>
-        {%for nome in apoio%}
-        <option value="{{nome}}">{{nome}}</option>
-        {%endfor%}
-    </select>
+    <div class="form-group">
+        <label class="control-label" for="numero_carta">Número da carta</label>
+        <input type="text" name="numero_carta" maxlength="5" class="form-control" placeholder="N°" title="" required="">
+    </div>
+    <div class="form-group">
+        <label for="selectApoio">Laboratório de Apoio:</label>
+        <select class="form-control" id="selectApoio" name="apoio">
+            <option value="" disabled selected>Selecione uma opção</option>
+            {% for nome in apoio %}
+            <option value="{{ nome }}">{{ nome }}</option>
+            {% endfor %}
+        </select>
+    </div>
     <div class="form-group">
         <label for="ac">A/C:</label>
         <select class="form-control" id="ac" name="ac" required>
@@ -27,9 +31,18 @@
             <!-- Adicione mais opções conforme necessário -->
         </select>
     </div>
-    <div class="form-group"><label class="control-label" for="id_nomePaciente">Nome do Paciente</label><input type="text" name="nomePaciente" maxlength="200" class="form-control" value="{{atendimento.nomePaciente}}" readonly title="" required=""></div>
-    <div class="form-group"><label class="control-label" for="id_RG">RG do Paciente</label><input type="text" name="rgPaciente" maxlength="200" class="form-control" placeholder="Número do RG" title="" required="" id="id_rg"></div>
-    <div class="form-group"><label class="control-label" for="id_RG">CPF do Paciente</label><input type="text" name="cpf" maxlength="14" class="form-control" placeholder="Número do CPF" title="" required="" id="id_cpf">
+    <div class="form-group">
+        <label class="control-label" for="id_nomePaciente">Nome do Paciente</label>
+        <input type="text" name="nomePaciente" maxlength="200" class="form-control" value="{{ atendimento.nomePaciente }}" readonly title="" required="">
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="id_RG">RG do Paciente</label>
+        <input type="text" name="rgPaciente" maxlength="200" class="form-control" placeholder="Número do RG" title="" required="" id="id_rg">
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="id_RG">CPF do Paciente</label>
+        <input type="text" name="cpf" maxlength="14" class="form-control" placeholder="Número do CPF" title="" required="" id="id_cpf">
+        <span id="cpf-error" style="color: red; display: none;">CPF inválido!</span>
     </div>
     <div class="form-group">
         <label for="ac">Sexo do Paciente:</label>
@@ -40,144 +53,188 @@
             <option value="Feminino">Feminino</option>
             <!-- Adicione mais opções conforme necessário -->
         </select>
-        <div class="form-group"><label for="nascimento" >Data de Nascimento:</label></div>
+        <div class="form-group"><label for="nascimento">Data de Nascimento:</label></div>
         <div class="form-group"><input type="date" class="form-control" id="dataInput" name="nascimento" required></div>
     </div>
-    <div class="form-group"><label class="control-label" for="id_maePaciente">Nome da Mãe do Paciente</label><input type="text" placeholder="Mãe do Paciente" name="maePaciente" maxlength="200" class="form-control" title="" required=""></div>
-    
-</div></div>
-<div class="form-group"><label class="control-label" for="id_nomePaciente">Código EV</label><input type="text" name="codigo" maxlength="12" class="form-control" title="" readonly required="" value="{{atendimento.codigo}}"></div>
-<div class="form-group"><label for="dataInput" >Data da coleta:</label></div>
-<div class="form-group"><input type="date" class="form-control" id="dataInput" name="data" required></div>
-<div class="form-group"><label class="control-label" for="id_medico">Médico Solicitante</label><input type="text" placeholder="Médico Solicitante" name="medico" maxlength="200" class="form-control" title="" required=""></div>
-<div class="form-group"><label class="control-label" for="id_crm">CRM do Médico Solicitante</label><input type="text" placeholder="CRM Médico Solicitante" name="crm_medico" maxlength="200" class="form-control" id="crm_medico" title="" required=""></div>
-<div class="form-group"><label class="control-label" for="id_uf">Estado CRM do Médico</label><input type="text" placeholder="Estado CRM Médico Solicitante" name="uf_medico" maxlength="2" class="form-control"title="" required="" oninput="convertToUppercase(this)"></div>
-<div class="form-group">
-    <label class="control-label" for="id_convenio">Convênio</label>
-    <select id="opcoes" name="categoria" class="form-control" onchange="mostrarCampoTexto()">
-        <option value="Particular">Particular</option>
-        <option value="Convenio">Convênio</option>
-    </select>
-
-</div>
-<div id="campoTexto" style="display: none;">
-    <label for="outrasInformacoes">Digite o Convênio:</label>
-    <input class="form-control" type="text" id="outrasInformacoes" name="convenio" placeholder="Insira o Convênio">
-</div>
-
-<label class="control-label" for="id_solicitaExames" >Exames Solicitados</label>
-<input type="checkbox" class="acb" name="exame" value="Histopatológico" onclick='deRequire("acb")' required> Histopatológico
-<input type="checkbox" class ="acb" name="exame" value="Citopatológico" onclick='deRequire("acb")'" required> Citopatológico
-<input type="checkbox" class="acb" name="exame" value="Imunohistoquímica"onclick='deRequire("acb")')" required> Imunohistoquímica
-
-<div class="form-group"><label class="control-label" for="id_descmaterial">Descrição do Material</label><input type="text" placeholder="Digite a descrição do material" name="descmaterial" maxlength="250" class="form-control" title="" required=""></div>
-
-<div class="form-group">
-    <label class="control-label" for="id_material">Materiais</label>
-    <div class="input-group">
-        <input type="text" class="form-control" id="item-input" placeholder="Insira os materiais">
-        <input type="text" class="form-control" id="price-input" placeholder="Preço (ex., 10,50)">
-        <input type="text" class="form-control" id="quantity-input" placeholder="Quantidade">
-        <button type="button" onclick="addItem()" class="btn btn-primary">
-            <i class="glyphicon glyphicon-plus"></i> <!-- Ícone de mais (+) -->
-        </button>
+    <div class="form-group">
+        <label class="control-label" for="id_maePaciente">Nome da Mãe do Paciente</label>
+        <input type="text" placeholder="Mãe do Paciente" name="maePaciente" maxlength="200" class="form-control" title="" required="">
     </div>
-    <ul id="item-list">
-        <!-- Existing items will be displayed here -->
-    </ul>
-</div>
-
-<div class="form-group"> 
-    <button class="btn btn-primary" aria-label="Left Align" type="submit" >Gerar Carta</button>
-    
-    <a href="/atendimentos" class="btn btn-danger" aria-label="Left Align">Cancelar</a>
-    </div> 
-</div>
+    <div class="form-group">
+        <label class="control-label" for="id_nomePaciente">Código EV</label>
+        <input type="text" name="codigo" maxlength="12" class="form-control" title="" readonly required="" value="{{ atendimento.codigo }}">
+    </div>
+    <div class="form-group">
+        <label for="dataInput">Data da coleta:</label>
+    </div>
+    <div class="form-group"><input type="date" class="form-control" id="dataInput" name="data" required></div>
+    <div class="form-group">
+        <label class="control-label" for="id_medico">Médico Solicitante</label>
+        <input type="text" placeholder="Médico Solicitante" name="medico" maxlength="200" class="form-control" title="" required="">
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="id_crm">CRM do Médico Solicitante</label>
+        <input type="text" placeholder="CRM Médico Solicitante" name="crm_medico" maxlength="200" class="form-control" id="crm_medico" title="" required="">
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="id_uf">Estado CRM do Médico</label>
+        <input type="text" placeholder="Estado CRM Médico Solicitante" name="uf_medico" maxlength="2" class="form-control" title="" required="" oninput="convertToUppercase(this)">
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="id_convenio">Convênio</label>
+        <select id="opcoes" name="categoria" class="form-control" onchange="mostrarCampoTexto()">
+            <option value="Particular">Particular</option>
+            <option value="Convenio">Convênio</option>
+        </select>
+    </div>
+    <div id="campoTexto" style="display: none;">
+        <label for="outrasInformacoes">Digite o Convênio:</label>
+        <input class="form-control" type="text" id="outrasInformacoes" name="convenio" placeholder="Insira o Convênio">
+    </div>
+    <label class="control-label" for="id_solicitaExames">Exames Solicitados</label>
+    <input type="checkbox" class="acb" name="exame" value="Histopatológico" onclick='deRequire("acb")' required> Histopatológico
+    <input type="checkbox" class="acb" name="exame" value="Citopatológico" onclick='deRequire("acb")' required> Citopatológico
+    <input type="checkbox" class="acb" name="exame" value="Imunohistoquímica" onclick='deRequire("acb")' required> Imunohistoquímica
+    <div class="form-group">
+        <label class="control-label" for="id_descmaterial">Descrição do Material</label>
+        <input type="text" placeholder="Digite a descrição do material" name="descmaterial" maxlength="250" class="form-control" title="" required="">
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="id_material">Materiais</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="item-input" placeholder="Insira os materiais">
+            <input type="text" class="form-control" id="price-input" placeholder="Preço (ex., 10,50)">
+            <input type="text" class="form-control" id="quantity-input" placeholder="Quantidade">
+            <button type="button" onclick="addItem()" class="btn btn-primary">
+                <i class="glyphicon glyphicon-plus"></i> <!-- Ícone de mais (+) -->
+            </button>
+        </div>
+        <ul id="item-list">
+            <!-- Existing items will be displayed here -->
+        </ul>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" aria-label="Left Align" type="submit">Gerar Carta</button>
+        <a href="/atendimentos" class="btn btn-danger" aria-label="Left Align">Cancelar</a>
+    </div>
 </form>
 
-
-
 <style>
-    .form-control{
+    .form-control {
         max-width: 25%;
     }
     .input-group {
-    display: flex;
-    gap: 10px; /* Espaçamento entre os elementos */
-}
-
-/* Ajuste o tamanho dos inputs conforme necessário */
-.form-control {
-    width: 250px; /* Defina o tamanho desejado */
-}
+        display: flex;
+        gap: 10px; /* Espaçamento entre os elementos */
+    }
+    /* Ajuste o tamanho dos inputs conforme necessário */
+    .form-control {
+        width: 250px; /* Defina o tamanho desejado */
+    }
 </style>
 
 <script>
+// Validação de CPF
+function validarCPF(cpf) {
+    cpf = cpf.replace(/[^\d]+/g, ''); // Remove caracteres não numéricos
+    if (cpf.length !== 11) return false;
 
+    let soma = 0;
+    let resto;
 
+    // Validação de sequência repetida
+    if (/^(\d)\1+$/.test(cpf)) return false;
 
-function deRequire(elClass) {
-  el = document.getElementsByClassName(elClass);
+    for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.substring(9, 10))) return false;
 
-  var atLeastOneChecked = false; //at least one cb is checked
-  for (i = 0; i < el.length; i++) {
-    if (el[i].checked === true) {
-      atLeastOneChecked = true;
-    }
-  }
+    soma = 0;
+    for (let i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.substring(10, 11))) return false;
 
-  if (atLeastOneChecked === true) {
-    for (i = 0; i < el.length; i++) {
-      el[i].required = false;
-    }
-  } else {
-    for (i = 0; i < el.length; i++) {
-      el[i].required = true;
-    }
-  }
+    return true;
 }
 
-    document.getElementById('id_cpf').addEventListener('input', function(e) {
-             var value = e.target.value;
-             var cpfPattern = value
-                 .replace(/\D/g, '') // Remove qualquer coisa que não seja número
-                 .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona ponto após o terceiro dígito
-                 .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona ponto após o sexto dígito
-                 .replace(/(\d{3})(\d)/, '$1-$2') // Adiciona traço após o nono dígito
-                 .replace(/(-\d{2})\d+?$/, '$1'); // Impede entrada de mais de 11 dígitos
-             e.target.value = cpfPattern;
-         });
-         document.getElementById('id_rg').addEventListener('input', function(e) {
-             var value = e.target.value;
-             var rgPattern = value
-                 .replace(/\D/g, '') // Remove qualquer coisa que não seja número
-             e.target.value = rgPattern;
-         });
- 
-         document.getElementById('crm_medico').addEventListener('input', function(e) {
-             var value = e.target.value;
-             var rgPattern = value
-                 .replace(/\D/g, '') // Remove qualquer coisa que não seja número
-             e.target.value = rgPattern;
-         });
-         function convertToUppercase(input) {
-            input.value = input.value.toUpperCase().replace(/[^A-Z]/g, '');
-        }
-        
-        function mostrarCampoTexto() {
-            const opcaoSelecionada = document.getElementById("opcoes").value;
-            const campoTexto = document.getElementById("campoTexto");
+function deRequire(elClass) {
+    el = document.getElementsByClassName(elClass);
 
-            if (opcaoSelecionada === "Convenio") {
-                campoTexto.style.display = "block";
-            } else {
-                campoTexto.style.display = "none";
-            }
+    var atLeastOneChecked = false; //at least one cb is checked
+    for (i = 0; i < el.length; i++) {
+        if (el[i].checked === true) {
+            atLeastOneChecked = true;
         }
+    }
 
-    
-        const itens = [];
-        function addItem() {
+    if (atLeastOneChecked === true) {
+        for (i = 0; i < el.length; i++) {
+            el[i].required = false;
+        }
+    } else {
+        for (i = 0; i < el.length; i++) {
+            el[i].required = true;
+        }
+    }
+}
+
+document.getElementById('id_cpf').addEventListener('input', function(e) {
+    var value = e.target.value;
+    var cpfPattern = value
+        .replace(/\D/g, '') // Remove qualquer coisa que não seja número
+        .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona ponto após o terceiro dígito
+        .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona ponto após o sexto dígito
+        .replace(/(\d{3})(\d)/, '$1-$2') // Adiciona traço após o nono dígito
+        .replace(/(-\d{2})\d+?$/, '$1'); // Impede entrada de mais de 11 dígitos
+    e.target.value = cpfPattern;
+});
+
+document.getElementById('id_cpf').addEventListener('blur', function(e) {
+    const cpf = e.target.value;
+    const valid = validarCPF(cpf);
+    const errorMessage = document.getElementById('cpf-error');
+
+    if (!valid) {
+        errorMessage.style.display = 'block';
+        e.target.focus();
+    } else {
+        errorMessage.style.display = 'none';
+    }
+});
+
+document.getElementById('id_rg').addEventListener('input', function(e) {
+    var value = e.target.value;
+    var rgPattern = value
+        .replace(/\D/g, '') // Remove qualquer coisa que não seja número
+    e.target.value = rgPattern;
+});
+
+document.getElementById('crm_medico').addEventListener('input', function(e) {
+    var value = e.target.value;
+    var rgPattern = value
+        .replace(/\D/g, '') // Remove qualquer coisa que não seja número
+    e.target.value = rgPattern;
+});
+
+function convertToUppercase(input) {
+    input.value = input.value.toUpperCase().replace(/[^A-Z]/g, '');
+}
+
+function mostrarCampoTexto() {
+    const opcaoSelecionada = document.getElementById("opcoes").value;
+    const campoTexto = document.getElementById("campoTexto");
+
+    if (opcaoSelecionada === "Convenio") {
+        campoTexto.style.display = "block";
+    } else {
+        campoTexto.style.display = "none";
+    }
+}
+
+const itens = [];
+function addItem() {
     const newItem = document.getElementById("item-input").value;
     const newPrice = parseFloat((document.getElementById("price-input").value.replace(',', '.') * 100) / 100);
     const newQuantity = parseInt(document.getElementById("quantity-input").value);
@@ -216,51 +273,9 @@ function deRequire(elClass) {
     document.getElementById("quantity-input").value = "";
 }
 
-        // function addItem() {
-        //     const newItem = document.getElementById("item-input").value;
-        //     const newPrice = parseFloat(document.getElementById("price-input").value);
-        //     const newQuantity = parseInt(document.getElementById("quantity-input").value);
-
-        //     if (newItem.trim() === "" || isNaN(newPrice) || isNaN(newQuantity)) {
-        //         alert("Entre com o item, preço e quantidade.");
-        //         return;
-        //     }
-
-        //     const novoItem = {
-        //         item: newItem,
-        //         preco: newPrice,
-        //         quantidade: newQuantity,
-        //     };
-        //     itens.push(novoItem);
-
-        //     const li = document.createElement("li");
-        //     li.textContent = `${newItem} - Preço: R$ ${newPrice.toFixed(2).replace('.', ',')} - Quantidade: ${newQuantity}`+' ';
-
-        //     const deleteButton = document.createElement("button");
-        //     deleteButton.classList.add('btn');
-        //     deleteButton.classList.add('btn-danger');
-        //     deleteButton.classList.add('glyphicon');
-        //     deleteButton.classList.add('glyphicon-remove-sign');
-        //     deleteButton.onclick = function() {
-        //         const index = Array.from(li.parentNode.children).indexOf(li);
-        //         li.parentNode.removeChild(li);
-        //         itens.splice(index, 1);
-        //     };
-
-        //     li.appendChild(deleteButton);
-        //     document.getElementById("item-list").appendChild(li);
-
-        //     document.getElementById("item-input").value = "";
-        //     document.getElementById("price-input").value = "";
-        //     document.getElementById("quantity-input").value = "";
-        // }
-
-        //fetch($("#Url").attr("data-url"), {
-        
-            function sendData() {
+function sendData() {
     // Gather form data
     const formData = new FormData(document.getElementById("formulario"));
-    
 
     // Add items data to the form data
     formData.append("itens", JSON.stringify(itens));
@@ -301,6 +316,5 @@ function deRequire(elClass) {
         alert('Failed to send form data. Please try again.'); // You can customize the error message as needed
     });
 }
-
- </script>
+</script>
 {%endblock content%}

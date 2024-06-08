@@ -12,6 +12,7 @@
         }
         table, th, td {
         border: 1px solid black;
+        border-collapse: collapse;
 }   
 body {
   background-image: url('https://gistcdn.githack.com/WagnerWolf/fa41cf1bf9e7dc870e540c9d4cee8640/raw/52bcbdbd6d237972bb19cb6b1c7ca196f5c79397/carta.svg');
@@ -22,19 +23,23 @@ body {
 }
 p {
     font-size: 16px;
-}p2 {
+}
+p2 {
   font-size: 13px;
   font-weight: bolder;
-}p3 {
+}
+p3 {
   font-size: 13px;
 }
 #bottom {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 140px;
-        }
-
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 140px;
+}
+.total-row {
+  text-align: right;
+}
 
     </style>
 </head>
@@ -44,11 +49,11 @@ p {
 <br>
 <br>
 <br>
-    <h4 style="text-align: right; padding: 0; margin: 0;">N° {{numero_carta}}/{% now "Y" %}</h5>
-    <h4 style="text-align: right; padding: 0; margin: 0;">Santarém, Pará {% now "d/m/Y" %} </h5>
-<h3 style="text-align: left; padding: 0; margin: 0;">À</h5>
-<h3 style="text-align: left; padding: 0; margin: 0;">{{apoio}}</h5>
-<h3 style="text-align: left; padding: 0; margin: 0;">A/C: {{ac}}</h5>
+    <h4 style="text-align: right; padding: 0; margin: 0;">N° {{numero_carta}}/{% now "Y" %}</h4>
+    <h4 style="text-align: right; padding: 0; margin: 0;">Santarém, Pará {% now "d/m/Y" %} </h4>
+<h3 style="text-align: left; padding: 0; margin: 0;">À</h3>
+<h3 style="text-align: left; padding: 0; margin: 0;">{{apoio}}</h3>
+<h3 style="text-align: left; padding: 0; margin: 0;">A/C: {{ac}}</h3>
 <br>
 <p style="text-align: left; padding: 0; margin: 0;"><strong>Estamos encaminhando o material para exame do seguinte paciente:</strong></p>
 <br>
@@ -85,18 +90,16 @@ p {
                 <th>Custo Individual</th>
                 <th>Sub-Total</th>
             </tr>
-            
+        </thead>
         <tbody>
             {%if not flag%}
             {% for item in itens%}
             <tr>
-                
                 <td>{{forloop.counter}}</td>
                 <td>{{item.item}}</td>
                 <td>{{item.quantidade}}</td>
                 <td>R$ {{ item.preco }}</td>
                 <td>R$ {{ item.total }}</td>
-                
             </tr>
             {%endfor%}
             {%else%}
@@ -106,19 +109,17 @@ p {
                 <td>{{itens.quantidade}}</td>
                 <td>R$ {{ itens.preco }}</td>
                 <td>R$ {{ itens.total }}</td>
-                
             </tr>
             {%endif%}
 
-            <tr>
-                <td>Total</td>
+            <tr class="total-row">
+                <td colspan="4">Total</td>
                 <td>R$ {{total}}</td>
             </tr>
         </tbody>
     </table>
     <div id="bottom">
         <p3><strong>Emitido por:</strong> {{nomeUsuario}} - CPF: {{cpfUsuario}}</p3>
-        </div>
-
+    </div>
 </body>
 </html>
