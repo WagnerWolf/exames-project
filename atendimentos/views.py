@@ -168,7 +168,6 @@ def carta_atendimento(request, atendimento_id):
         itens = itens.replace("]","")
         itens2 = itens.replace("[","")
         itens2 = eval(itens2)
-        print(len(itens2))
         total = 0.00
         if type(itens2) is not dict:
             for item in itens2:
