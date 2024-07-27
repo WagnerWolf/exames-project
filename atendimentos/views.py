@@ -31,7 +31,7 @@ def atendimentos(request):
         mesnome = {'01':'Janeiro','02':'Fevereiro','03':'Março','04':'Abril','05':'Maio','06': 'Junho','07':'Julho','08':'Agosto', '09':'Setembro', '10':'Outubro','11':'Novembro','12':'Dezembro'}
         atendimentos = Atendimento.objects.order_by('dataAtendimento').filter(dataAtendimento__year=ano, 
                       dataAtendimento__month=mes)
-        paginator = Paginator(atendimentos, 15)
+        paginator = Paginator(atendimentos, 999)
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
         context = {'atendimentos': atendimentos, 'filtrado':filtrado,'ano':ano,'mes':mes,'mesnome':mesnome.get(mes),'page_obj':page_obj}
