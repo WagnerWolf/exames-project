@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+
     {% load static %}
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carta Biópsia</title>
@@ -50,7 +52,8 @@ p3 {
 <br>
 <br>
     <h4 style="text-align: right; padding: 0; margin: 0;">N° {{numero_carta}}/{% now "Y" %}</h4>
-    <h4 style="text-align: right; padding: 0; margin: 0;">Santarém, Pará {% now "d/m/Y" %} </h4>
+    <h4 style="text-align: right; padding: 0; margin: 0;">Santarém, Pará, {% now "j \d\e F \d\e Y" %} </h4>
+    
 <h3 style="text-align: left; padding: 0; margin: 0;">À</h3>
 <h3 style="text-align: left; padding: 0; margin: 0;">{{apoio}}</h3>
 <h3 style="text-align: left; padding: 0; margin: 0;">A/C: {{ac}}</h3>

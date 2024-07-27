@@ -154,8 +154,10 @@ def carta_atendimento(request, atendimento_id):
         year, month, day = nascimento.split('-')
         nascimento = f"{day}/{month}/{year}"
         maePaciente = request.POST.get('maePaciente')
-        codigo = request.POST.get('codigo')
+        codigo = request.POST.get('codigo')        
         data = request.POST.get('data')
+        year1, month1, day1 = data.split('-')
+        data = f"{day1}/{month1}/{year1}"
         medico = request.POST.get('medico')
         crm = request.POST.get('crm_medico')
         uf_medico = request.POST.get('uf_medico')
